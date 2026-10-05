@@ -1,0 +1,59 @@
+# BÀI TOAN THÁP HÀ NỘI
+quy tắc:
+-Mỗi lần chỉ được chuyển 1 đĩa trên cùng.
+-Đĩa lớn hơn không bao giờ được đặt lên trên đĩa nhỏ hơn.
+
+1. Phương pháp Đệ quy (Recursive)
+ **Các bước thực hiện:**
+Trường hợp cơ sở:Nếu n = 1, ta chỉ việc chuyển đĩa đó thẳng từ cột nguồn sang đích.
+* Trường hợp tổng quát: Để chuyển n đĩa từ nguồn sang đích, ta thực hiện 3 bước:
+    1. Chuyển n-1 đĩa từ cột nguồn sang cột giữa.
+    2. Chuyển đĩa lớn nhất (đĩa thứ n) từ nguồn sang đích.
+    3. Chuyển lại n-1 đĩa từ cọc giữa sang cọc đích.
+
+## 2. Phương pháp khử đệ quy bằng ngăn xếp 
+
+Nếu n quá lớn, phương pháp đệ quy có thể gây ra lỗi tràn bộ nhớ. Để khắc phục, ta mô phỏng lại Call Stack của hệ điều hành bằng một cấu trúc dữ liệu `std::stack` tự định nghĩa.
+Các bước thực hiện:
+1. Khởi tạo một `Ngăn xếp` để chứa các `sx`. Mỗi nhiệm vụ lưu trữ số đĩa cần chuyển, cột nguồn, cột đích, cột giữa, và một cờ `labuocchuyen` để biết nhiệm vụ này là in ra màn hình hay tiếp tục chia nhỏ.
+2. Đưa nhiệm vụ gốc (n đĩa) vào ngăn xếp.
+3. Lặp lại quá trình rút nhiệm vụ trên cùng ra khỏi ngăn xếp cho đến khi ngăn xếp rỗng:
+    *   Nếu cờ `labuochuyen == true`, ta in ra lệnh chuyển đĩa.
+    *   Nếu cờ `labuocchuyen == false` và số đĩa n > 1, ta sẽ chia nhỏ nhiệm vụ thành 3 bước y hệt như đệ quy.
+test Cases (Input & Output)
+
+Tổng số bước chuyển đĩa luôn là 2^n - 1.
+* Độ phức tạp thời gian o(2^n)
+  * Với n đĩa, số lần di chuyển đĩa tối thiểu luôn là 2^n - 1.
+  
+### Test Case 1: n = 1
+*   **Input:** `1`
+*   **Expected Output:**
+    ```text
+    Chuyen dia 1 tu coc A sang coc C
+    ```
+
+### Test Case 2: n = 2
+*   **Input:** `2`
+*   **Tổng số bước:** $2^2 - 1 = 3$ bước
+*   **Expected Output:**
+    ```text
+    Chuyen dia 1 tu coc A sang coc B
+    Chuyen dia 2 tu coc A sang coc C
+    Chuyen dia 1 tu coc B sang coc C
+    ```
+
+### Test Case 3: n = 3
+*   **Input:** `3`
+*   **Tổng số bước:** 2^3 - 1 = 7 bước
+*   **Expected Output:**
+    ```text
+    Chuyen dia 1 tu coc A sang coc C
+    Chuyen dia 2 tu coc A sang coc B
+    Chuyen dia 1 tu coc C sang coc B
+    Chuyen dia 3 tu coc A sang coc C
+    Chuyen dia 1 tu coc B sang coc A
+    Chuyen dia 2 tu coc B sang coc C
+    Chuyen dia 1 tu coc A sang coc C
+    ```
+
